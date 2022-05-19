@@ -5,6 +5,7 @@ import multiprocessing as mp
 import os
 import time
 import cv2
+import torch.onnx
 import tqdm
 
 from detectron2.config import get_cfg
@@ -81,6 +82,17 @@ if __name__ == "__main__":
     cfg = setup_cfg(args)
 
     demo = VisualizationDemo(cfg)
+    # save the model with a single-batch 512x512 image input
+    dummy_input = torch.randn(1, 512, 512)
+    torch.onnx.export(demo.predictor.model, dummy_input, 'sparse_inst.onnx',
+                      export_params=True,
+                      opset_version=11,
+                      do_constant_folding=True,
+                      input_names=['image'],
+                      output_names=['masks', 'scores', 'labels']
+                      )
+    # directly exit the program
+    exit(0)
 
     if args.input:
         if len(args.input) == 1:
