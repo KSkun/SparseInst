@@ -6,6 +6,7 @@ inference_test_output
 
 
 *.png
+*.jpg
 *.json
 *.diff
 
@@ -24,6 +25,7 @@ wheels/
 *.pth
 *.pkl
 *.npy
+*.onnx
 
 # ipython/jupyter notebooks
 *.ipynb

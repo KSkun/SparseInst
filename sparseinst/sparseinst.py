@@ -106,8 +106,9 @@ class SparseInst(nn.Module):
             return losses
         else:
             results = self.inference(output, batched_inputs, max_shape, images.image_sizes)
-            processed_results = [{"instances": r} for r in results]
-            return processed_results
+            # processed_results = [{"instances": r} for r in results]
+            # return processed_results
+            return results
 
     def forward_test(self, images):
         pass
@@ -126,7 +127,7 @@ class SparseInst(nn.Module):
 
             # ori_shape = (batched_input["height"], batched_input["width"])
             # get size from tensor
-            ori_shape = batched_input.size()
+            ori_shape = batched_input.size()[1:]
             # result = Instances(ori_shape)
             # max/argmax
             scores, labels = scores_per_image.max(dim=-1)
