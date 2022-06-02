@@ -1,7 +1,7 @@
 from onnxruntime.quantization import quantize_dynamic, QuantType
 
-model_fp32 = 'sparse_inst_opt.onnx'
-model_quant = 'sparse_inst_quant.onnx'
+model_fp32 = 'sparse_inst_mobile_opt.onnx'
+model_quant = 'sparse_inst_mobile_quant.onnx'
 quantized_model = quantize_dynamic(
     model_fp32,
     model_quant,

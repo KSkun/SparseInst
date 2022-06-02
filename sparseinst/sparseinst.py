@@ -62,7 +62,9 @@ class SparseInst(nn.Module):
         return image
 
     def preprocess_inputs(self, batched_inputs):
-        images = [x["image"].to(self.device) for x in batched_inputs]
+        # images = [x["image"].to(self.device) for x in batched_inputs]
+        # input is a batch tensor now
+        images = [x.to(self.device) for x in batched_inputs]
         images = [self.normalizer(x) for x in images]
         images = ImageList.from_tensors(images, 32)
         return images
@@ -111,8 +113,9 @@ class SparseInst(nn.Module):
             return losses
         else:
             results = self.inference(output, batched_inputs, max_shape, images.image_sizes)
-            processed_results = [{"instances": r} for r in results]
-            return processed_results
+            # processed_results = [{"instances": r} for r in results]
+            # return processed_results
+            return results
 
     def forward_test(self, images):
         pass
@@ -129,8 +132,10 @@ class SparseInst(nn.Module):
         for _, (scores_per_image, mask_pred_per_image, batched_input, img_shape) in enumerate(zip(
                 pred_scores, pred_masks, batched_inputs, image_sizes)):
 
-            ori_shape = (batched_input["height"], batched_input["width"])
-            result = Instances(ori_shape)
+            # ori_shape = (batched_input["height"], batched_input["width"])
+            # get size from tensor
+            ori_shape = batched_input.size()[1:]
+            # result = Instances(ori_shape)
             # max/argmax
             scores, labels = scores_per_image.max(dim=-1)
             # cls threshold
@@ -138,12 +143,6 @@ class SparseInst(nn.Module):
             scores = scores[keep]
             labels = labels[keep]
             mask_pred_per_image = mask_pred_per_image[keep]
-
-            if scores.size(0) == 0:
-                result.scores = scores
-                result.pred_classes = labels
-                results.append(result)
-                continue
 
             h, w = img_shape
             # rescoring mask using maskness
@@ -162,10 +161,12 @@ class SparseInst(nn.Module):
             # mask_pred = BitMasks(mask_pred) 
 
             # using Detectron2 Instances to store the final results
-            result.pred_masks = mask_pred
-            result.scores = scores
-            result.pred_classes = labels
-            results.append(result)
+            # result.pred_masks = mask_pred
+            # result.scores = scores
+            # result.pred_classes = labels
+            # results.append(result)
+            # use tuple instead of Instances object
+            results.append((mask_pred, scores, labels))
 
         return results
 

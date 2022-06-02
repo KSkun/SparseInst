@@ -84,7 +84,7 @@ if __name__ == "__main__":
     demo = VisualizationDemo(cfg)
     # save the model with a single-batch 512x512 image input
     dummy_input = torch.randint(0, 255, (1, 3, 512, 512)).type(torch.float32)
-    torch.onnx.export(demo.predictor.model, dummy_input, 'sparse_inst.onnx',
+    torch.onnx.export(demo.predictor.model, dummy_input, 'sparse_inst_mobile.onnx',
                       export_params=True,
                       opset_version=11,
                       do_constant_folding=True,

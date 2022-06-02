@@ -30,7 +30,7 @@ def masking_and_show(resized, outputs):
 
 
 if __name__ == '__main__':
-    ort_sess = ort.InferenceSession('sparse_inst_opt.onnx',
+    ort_sess = ort.InferenceSession('sparse_inst_mobile_opt.onnx',
                                     providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
 
     cap = cv2.VideoCapture(0)
