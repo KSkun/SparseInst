@@ -26,6 +26,8 @@ wheels/
 *.pkl
 *.npy
 *.onnx
+*.bin
+*.param
 
 # ipython/jupyter notebooks
 *.ipynb
