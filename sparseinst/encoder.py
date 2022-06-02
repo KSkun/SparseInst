@@ -26,13 +26,7 @@ class PyramidPoolingModule(nn.Module):
             in_channels + len(sizes) * channels, in_channels, 1)
 
     def _make_stage(self, features, out_features, size):
-        # prior = nn.AdaptiveAvgPool2d(output_size=(size, size))
-        # AdaptiveAvgPool2d <-> AvgPool2d
-        # ref: https://chiemon.github.io/2020/02/27/Pytorch%E8%BD%AConnx.html#hptpr
-        input_size = 16
-        stride_size = input_size // size
-        kernel_size = input_size - (size - 1) * stride_size
-        prior = nn.AvgPool2d(kernel_size=kernel_size, stride=stride_size)
+        prior = nn.AdaptiveAvgPool2d(output_size=(size, size))
         conv = Conv2d(features, out_features, 1)
         return nn.Sequential(prior, conv)
 

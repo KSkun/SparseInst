@@ -78,3 +78,8 @@ def add_sparse_inst_config(cfg):
     # (csp-)darknet: csp1, csp2, csp3, csp4
     cfg.MODEL.CSPNET.OUT_FEATURES = ["csp1", "csp2", "csp3", "csp4"]
 
+    cfg.MODEL.MBNET = CN()
+    cfg.MODEL.MBNET.NAME = "mbv2"
+    cfg.MODEL.MBNET.NORM = ""
+    # (csp-)darknet: csp1, csp2, csp3, csp4
+    cfg.MODEL.MBNET.OUT_FEATURES = ["mb3", "mb4", "mb5"]

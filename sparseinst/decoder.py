@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torch.nn import init
 import torch.nn.functional as F
-
+from torch.utils.checkpoint import checkpoint
 from fvcore.nn.weight_init import c2_msra_fill, c2_xavier_fill
 
 from detectron2.utils.registry import Registry
@@ -102,6 +102,7 @@ class MaskBranch(nn.Module):
     def forward(self, features):
         # mask features (x4 convs)
         features = self.mask_convs(features)
+        # features = checkpoint(self.mask_convs,features)
         return self.projection(features)
 
 
